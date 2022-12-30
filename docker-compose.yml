@@ -1,0 +1,11 @@
+version: '3'
+services:
+    expo:
+    restart: unless-stopped
+    build:
+      context: ./expo
+      dockerfile: Dockerfile
+    #profiles: ['dnc']
+    ports:
+      - 3000:80
+    hostname: "Dnc-server"

@@ -1,0 +1,36 @@
+pipeline{
+    agent{label 'docker'}
+    stages{
+        stage("Verify installation"){
+            steps{
+                sh '''
+                docker version
+                docker info
+                docker compose
+                curl --version 
+                jq --version
+                
+                '''
+            }
+        }
+        
+        stage ('starting container'){
+            steps{
+                sh 'docker compose up -d --nocolor --wait'
+                sh 'docker compose ps'
+            }
+        }
+        stage('TEsting against the container'){
+            steps{
+                sh 'curl http://training.mcci.io:3000/param?query=demo | jq'
+            }
+            }
+        }
+        post{
+            always{
+                sh 'docker compose down --remove-orphans -v'
+                sh 'docker compose ps'
+            }
+        }
+    }
+ 
