@@ -1,4 +1,9 @@
-FROM openjdk:8
+FROM tomcat:8.0
+
+ADD ./target/*.war /usr/local/tomcat/webapps/
+
 EXPOSE 8080
-ADD target/cicd-demo-0.0.1-SNAPSHOT.jar cicd-demo-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java","-jar","/cicd-demo-0.0.1-SNAPSHOT.jar"]
+
+WORKDIR /usr/local/tomcat/webapps/
+
+CMD ["catalina.sh", "run"]
